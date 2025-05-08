@@ -32,7 +32,7 @@ class EmotionController:
         self.polling = False
         self.polling_thread = None
         self.polling_interval = 10  # seconds
-        self.api_url = "https://conductor.auteur-engineering.com/current-state"
+        self.api_url = "https://sources.auteur-engineering.com/current-state"
         
     def set_volume(self, channel, value, duration=0, steps=1):
         """Set volume for a channel with optional fade duration"""
@@ -125,7 +125,9 @@ class EmotionController:
     def poll_api(self):
         """Poll the API for the current state"""
         try:
-            response = requests.get(self.api_url, timeout=5)
+            # Add query parameter 'installation=1' to the request
+            params = {'installation': 1}
+            response = requests.get(self.api_url, params=params, timeout=5)
             if response.status_code == 200:
                 try:
                     # Parse JSON response instead of expecting plain integer
